@@ -17,6 +17,7 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   ScrollController tabScrollController = ScrollController();
+  bool isLoading = true;
   List tabs = [
     "All",
     "Men's clothing",
@@ -25,32 +26,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     "Women's Clothing",
   ];
   String filter = "All";
-
-  void initState() {
-    super.initState();
-    fetchIfEmpty();
-  }
-
-  void fetchIfEmpty() {
-    if (ref.read(productProvider).isEmpty) {
-      fetchProducts();
-    }
-  }
-
-  Future<void> fetchProducts() async {
-    final resp = await http.get(
-      Uri.parse('https://fakestoreapi.com/products'),
-    );
-    if (resp.statusCode == 200) {
-      Iterable list = jsonDecode(resp.body);
-
-      List<Products> products =
-          List<Products>.from(list.map((e) => Products.fromJson(e)));
-      ref.read(productProvider.notifier).setProducts(products);
-    } else {
-      throw Exception('Failed to load the products!');
-    }
-  }
 
   List<Products> filterProducts(List<Products> products, String option) {
     if (option == "All") {
