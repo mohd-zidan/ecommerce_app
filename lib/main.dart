@@ -3,6 +3,7 @@ import 'package:ecommerce_app/screens/cart.dart';
 import 'package:ecommerce_app/screens/home_page.dart';
 import 'package:ecommerce_app/screens/saved.dart';
 import 'package:ecommerce_app/screens/search.dart';
+import 'package:ecommerce_app/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
           fontFamily: "General Sans"),
       debugShowCheckedModeBanner: false,
       debugShowMaterialGrid: false,
-      home: MainScreen(),
+      home: SplashScreen(),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:ecommerce_app/provider/product.dart';
 import 'package:ecommerce_app/screens/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -16,6 +17,7 @@ class SplashScreen extends ConsumerStatefulWidget {
 }
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
+  bool isLoading = true;
   void initState() {
     super.initState();
     fetchIfEmpty();
@@ -33,13 +35,15 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     );
     if (resp.statusCode == 200) {
       Iterable list = jsonDecode(resp.body);
-
       List<Products> products =
           List<Products>.from(list.map((e) => Products.fromJson(e)));
       ref.read(productProvider.notifier).setProducts(products);
-      await Future.delayed(Duration(seconds: 3));
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (context) => MainScreen()));
+      await Future.delayed(Duration(seconds: 1));
+      setState(() {
+        isLoading = false;
+      });
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => MainScreen()));
     } else {
       throw Exception('Failed to load the products!');
     }
@@ -55,16 +59,26 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             children: [
               Image.asset('assets/images/splash_bg.png'),
               Positioned(
-                top: 200,
-                left: 50,
-                child: Container(
-                  height: 134,
-                  width: 134,
-                  child:Image.asset('assets/icons/splash_logo.png')
+                top: 412,
+                left: 128,
+                child: Center(
+                  child: Container(
+                      height: 134,
+                      width: 134,
+                      child: SvgPicture.asset('assets/icons/splash_logo.svg')),
                 ),
               ),
             ],
-          )
+          ),
+          SizedBox(
+            height: 90,
+          ),
+          isLoading
+              ? CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 6.5,
+                )
+              : SizedBox.shrink(),
         ],
       ),
     );
