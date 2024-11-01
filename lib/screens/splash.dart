@@ -75,7 +75,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           isLoading
               ? CircularProgressIndicator(
                   color: Colors.white,
-                  strokeWidth: 6.5,
+                  strokeWidth: 6,
                 )
               : SizedBox.shrink(),
         ],
